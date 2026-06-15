@@ -6,7 +6,7 @@ const listElement = document.getElementById('tutorial-list');
 const contentDisplay = document.getElementById('content-display');
 
 async function loadTutorialList(path = FOLDER_PATH, parrentElement = listElement) {
-    const apiUrl = `https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/contents/${FOLDER_PATH}`;
+    const apiUrl = `https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/contents/${path}`;
     
     try {
         const response = await fetch(apiUrl);
@@ -17,8 +17,6 @@ async function loadTutorialList(path = FOLDER_PATH, parrentElement = listElement
         if (path === FOLDER_PATH) {
             parrentElement.innerHTML = '';
         }
-
-        listElement.innerHTML = '';
 
         files.forEach(file => {
             if (file.type === 'file' && file.name.endsWith('.md')) {
@@ -34,7 +32,7 @@ async function loadTutorialList(path = FOLDER_PATH, parrentElement = listElement
                 }
 
                 li.appendChild(a);
-                listElement.appendChild(li);
+                parrentElement.appendChild(li);
 
             } else if (file.type ===  'dir' && file.name !== 'images') {
                 const li =document.createElement('li');
