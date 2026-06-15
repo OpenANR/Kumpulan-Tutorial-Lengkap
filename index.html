@@ -20,20 +20,27 @@
                     <line x1="3" y1="18" x2="21" y2="18"></line>
                 </svg>
             </button>
-            <a href="#" class="logo">
-                <svg class="logo-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-                </svg>
-                <div class="brand-text">
-                    <span class="logo-text">FGT Docs</span>
-                    <span class="brand-subtitle">by : Open ANR</span>
-                </div>
-            </a>
         </div>
 
+        <a href="#" class="logo header-logo">
+            <svg class="logo-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+            </svg>
+            <div class="brand-text">
+                <span class="logo-text">FGT Docs</span>
+                <span class="brand-subtitle">by : Open ANR</span>
+            </div>
+        </a>
+
         <!-- Search Input -->
-        <div class="search-container">
+        <div class="search-container" id="search-wrapper">
+            <button id="search-close-btn" class="search-close-btn" aria-label="Close Search">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
             <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="11" cy="11" r="8"></circle>
                 <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
@@ -42,10 +49,18 @@
         </div>
 
         <div class="header-right">
-            <!-- Theme toggle switch in header -->
-            <div class="theme-switch-container">
-                <label class="theme-switch-label" for="theme-toggle-checkbox">
-                    <input type="checkbox" id="theme-toggle-checkbox" class="theme-switch-input">
+            <!-- Mobile Search Icon Button Trigger -->
+            <button id="mobile-search-btn" class="mobile-search-btn" aria-label="Open Search">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+            </button>
+
+            <!-- Theme toggle switch in header (desktop only) -->
+            <div class="theme-switch-container header-theme-switch">
+                <label class="theme-switch-label" for="theme-toggle-checkbox-header">
+                    <input type="checkbox" id="theme-toggle-checkbox-header" class="theme-switch-input">
                     <span class="theme-switch-slider">
                         <span class="theme-switch-slider-icon icon-sun">
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -74,6 +89,46 @@
     <div class="container">
         <!-- Sidebar Navigation -->
         <aside id="sidebar">
+            <!-- Brand Logo and Subtitle -->
+            <div class="sidebar-brand">
+                <a href="#" class="logo">
+                    <svg class="logo-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                    </svg>
+                    <div class="brand-text">
+                        <span class="brand-title">FGT Documentation</span>
+                        <span class="brand-subtitle">by : Open ANR</span>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Theme toggle switch in sidebar (mobile only) -->
+            <div class="theme-switch-container sidebar-theme-switch">
+                <label class="theme-switch-label" for="theme-toggle-checkbox-sidebar">
+                    <input type="checkbox" id="theme-toggle-checkbox-sidebar" class="theme-switch-input">
+                    <span class="theme-switch-slider">
+                        <span class="theme-switch-slider-icon icon-sun">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="5"></circle>
+                                <line x1="12" y1="1" x2="12" y2="3"></line>
+                                <line x1="12" y1="21" x2="12" y2="23"></line>
+                                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                                <line x1="1" y1="12" x2="3" y2="12"></line>
+                                <line x1="21" y1="12" x2="23" y2="12"></line>
+                                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                            </svg>
+                        </span>
+                        <span class="theme-switch-slider-icon icon-moon">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                            </svg>
+                        </span>
+                    </span>
+                </label>
+            </div>
 
             <!-- List of Tutorials -->
             <ul id="tutorial-list">
@@ -82,6 +137,13 @@
 
             <!-- About Section at Bottom -->
             <div class="sidebar-footer">
+                <a href="#" id="home-link" class="footer-link active">
+                    <svg class="home-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                    <span>Home</span>
+                </a>
                 <a href="about.html" id="about-link" class="footer-link">
                     <svg class="info-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="10"></circle>

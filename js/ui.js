@@ -1,27 +1,31 @@
 document.addEventListener('DOMContentLoaded', () => {
     // ----------------------------------------------------
-    // 1. Theme Configuration (Dark/Light Mode)
+    // 1. Theme Configuration (Dark/Light Mode Sync)
     // ----------------------------------------------------
-    const themeCheckbox = document.getElementById('theme-toggle-checkbox');
+    const themeCheckboxes = document.querySelectorAll('.theme-switch-input');
     
     // Check and set saved theme or default to system theme
     const savedTheme = localStorage.getItem('theme');
     const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     const isDark = savedTheme === 'dark' || (!savedTheme && systemPrefersDark);
     
-    // Set theme class on <html> (documentElement) to ensure consistent background propagation
+    // Set theme class on <html> and sync all checkboxes
     if (isDark) {
         document.documentElement.classList.add('dark-theme');
-        if (themeCheckbox) themeCheckbox.checked = true;
     } else {
         document.documentElement.classList.remove('dark-theme');
-        if (themeCheckbox) themeCheckbox.checked = false;
     }
-
-    // Toggle theme on checkbox change
-    if (themeCheckbox) {
-        themeCheckbox.addEventListener('change', () => {
-            if (themeCheckbox.checked) {
+    
+    themeCheckboxes.forEach(cb => {
+        cb.checked = isDark;
+        cb.addEventListener('change', () => {
+            const newDarkState = cb.checked;
+            // Sync all checkboxes on the page
+            themeCheckboxes.forEach(other => {
+                other.checked = newDarkState;
+            });
+            
+            if (newDarkState) {
                 document.documentElement.classList.add('dark-theme');
                 localStorage.setItem('theme', 'dark');
             } else {
@@ -29,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.setItem('theme', 'light');
             }
         });
-    }
+    });
 
     // ----------------------------------------------------
     // 2. Fetch Interceptor to Resolve Relative Markdown Image Paths
@@ -130,12 +134,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const targetLink = e.target.closest('a');
             if (!targetLink) return;
 
-            // Remove active class from all sidebar links and about link
+            // Remove active class from all sidebar links, about link, and home link
             tutorialList.querySelectorAll('a').forEach(link => {
                 link.classList.remove('active');
             });
             const aboutLink = document.getElementById('about-link');
             if (aboutLink) aboutLink.classList.remove('active');
+            const homeLink = document.getElementById('home-link');
+            if (homeLink) homeLink.classList.remove('active');
 
             // Add active class to clicked link
             targetLink.classList.add('active');
@@ -167,6 +173,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             }
             aboutLink.classList.add('active');
+            const homeLink = document.getElementById('home-link');
+            if (homeLink) homeLink.classList.remove('active');
             
             // Determine aboutUrl: use local relative path or fallback to GitHub raw on file:// protocol
             let aboutUrl = 'about.html';
@@ -206,6 +214,42 @@ document.addEventListener('DOMContentLoaded', () => {
                     `;
                     console.error("About page fetch error:", error);
                 }
+                
+                contentDisplay.classList.remove('content-loaded-animation');
+                void contentDisplay.offsetWidth; // Force reflow
+                contentDisplay.classList.add('content-loaded-animation');
+            }
+            
+            // Close mobile sidebar if open
+            document.body.classList.remove('sidebar-open');
+        });
+    }
+
+    // ----------------------------------------------------
+    // 5a. Home Page Link Event Listener
+    // ----------------------------------------------------
+    const homeLink = document.getElementById('home-link');
+    if (homeLink) {
+        homeLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            // Clear active state of tutorial links and about link
+            if (tutorialList) {
+                tutorialList.querySelectorAll('a').forEach(link => {
+                    link.classList.remove('active');
+                });
+            }
+            const aboutLink = document.getElementById('about-link');
+            if (aboutLink) aboutLink.classList.remove('active');
+            
+            homeLink.classList.add('active');
+            
+            // Reset main content to Welcome message
+            if (contentDisplay) {
+                contentDisplay.innerHTML = `
+                    <h1>SELAMAT DATANG DI LIBRARY TUTORIAL</h1>
+                    <p>Di website ini saya pribadi menyediakan berbagai macam-macam tutorial yang membahas mulai dari sistem operasi, pemrograman, troubleshooting, dan lain-lain.</p>
+                `;
                 
                 contentDisplay.classList.remove('content-loaded-animation');
                 void contentDisplay.offsetWidth; // Force reflow
@@ -273,7 +317,34 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ----------------------------------------------------
-    // 7. Mobile Sidebar Drawer Toggle
+    // 7. Mobile Search Layout Toggle
+    // ----------------------------------------------------
+    const mobileSearchBtn = document.getElementById('mobile-search-btn');
+    const searchCloseBtn = document.getElementById('search-close-btn');
+    const header = document.querySelector('.header');
+    
+    if (mobileSearchBtn && header) {
+        mobileSearchBtn.addEventListener('click', () => {
+            header.classList.add('search-active');
+            if (searchInput) {
+                searchInput.focus();
+            }
+        });
+    }
+
+    if (searchCloseBtn && header) {
+        searchCloseBtn.addEventListener('click', () => {
+            header.classList.remove('search-active');
+            if (searchInput) {
+                searchInput.value = '';
+                // Reset sidebar filters
+                searchInput.dispatchEvent(new Event('input'));
+            }
+        });
+    }
+
+    // ----------------------------------------------------
+    // 8. Mobile Sidebar Drawer Toggle
     // ----------------------------------------------------
     const mobileToggle = document.getElementById('mobile-toggle');
     const overlay = document.getElementById('sidebar-overlay');
